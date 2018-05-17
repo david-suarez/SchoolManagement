@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using SchoolManagement.DataReader;
 using SchoolManagement.Factory;
-using SchoolManagement.Interfaces;
 using SchoolManagement.Validators;
 
 namespace SchoolManagementTests.Factory

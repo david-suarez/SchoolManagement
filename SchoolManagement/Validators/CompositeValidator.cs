@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 using SchoolManagement.Interfaces;
 
@@ -19,7 +19,7 @@ namespace SchoolManagement.Validators
 
         public bool Validate()
         {
-            foreach(var validator in this.validators)
+            foreach (var validator in this.validators)
             {
                 if (!validator.Validate())
                 {

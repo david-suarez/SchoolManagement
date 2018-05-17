@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Text.RegularExpressions;
 using SchoolManagement.Exceptions;
 using SchoolManagement.Interfaces;
@@ -26,7 +26,7 @@ namespace SchoolManagement.Validators
             var strTheseAreInvalidFileNameChars = new string(Path.GetInvalidPathChars());
             strTheseAreInvalidFileNameChars += @":/?*" + "\"";
             var containsABadCharacter = new Regex("[" + Regex.Escape(strTheseAreInvalidFileNameChars) + "]");
-            if (containsABadCharacter.IsMatch(PathToValidate.Substring(3, PathToValidate.Length - 3)))
+            if (containsABadCharacter.IsMatch(this.PathToValidate.Substring(3, this.PathToValidate.Length - 3)))
             {
                 throw new InvalidPathException("Invalid path");
             }

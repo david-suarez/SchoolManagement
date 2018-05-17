@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -24,7 +24,7 @@ namespace SchoolManagement
             Log.Info("Application started");
             while (true)
             {
-                bool exitApp = PrintUserMenu();
+                var exitApp = PrintUserMenu();
                 if (exitApp)
                 {
                     break;
@@ -87,10 +87,6 @@ namespace SchoolManagement
                         Console.WriteLine("The path of the file is not correct. Please try again.");
                         Console.ReadKey();
                     }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
                 }
                 else
                 {
@@ -129,7 +125,7 @@ namespace SchoolManagement
         private static void LoadDataFromCsvFile()
         {
             Log.Info("Load data from csv File");
-            if(SchoolData != null)
+            if (SchoolData != null)
             {
                 Console.Clear();
                 Console.WriteLine($"There is already a file loaded ({FileName}). Do you want to overwrite the data?");
@@ -137,7 +133,7 @@ namespace SchoolManagement
                 Console.WriteLine("2. No  ");
                 Console.Write("Please select an option: ");
                 var userInput = Console.ReadLine();
-                if(userInput == "2" || userInput == "2.")
+                if (userInput == "2" || userInput == "2.")
                 {
                     return;
                 }
@@ -153,7 +149,8 @@ namespace SchoolManagement
             Console.WriteLine("== Load data from csv file ==");
             Console.Write("Enter the full path of the csv file: ");
             var filePath = Console.ReadLine();
-            var validators = new List<IValidator> {
+            var validators = new List<IValidator>
+            {
                 new PathValidator(filePath),
                 new FileValidator(filePath)
             };
@@ -181,10 +178,12 @@ namespace SchoolManagement
 
                 Console.WriteLine("\tRowState");
 
-                foreach (DataRow row in currentRows)
+                foreach (var row in currentRows)
                 {
                     foreach (DataColumn column in SchoolData.Columns)
+                    {
                         Console.Write("\t{0}", row[column]);
+                    }
 
                     Console.WriteLine("\t" + row.RowState);
                 }
