@@ -45,7 +45,7 @@ namespace SchoolManagement.DataReader
                                     for (var j = 0; j < rowValues.Count(); j++)
                                     {
                                         var rowValue = Regex.Replace(rowValues[j], @"[\r\n\t ]+", " ");
-                                        csvData.Columns.Add(rowValue);
+                                        csvData.Columns.Add(rowValue.ToUpper());
                                     }
                                 }
                                 else

@@ -5,7 +5,6 @@ using System.IO;
 
 using SchoolManagement.Exceptions;
 using SchoolManagement.Factory;
-using SchoolManagement.Interfaces;
 using SchoolManagement.Validators;
 
 namespace SchoolManagement
@@ -35,12 +34,12 @@ namespace SchoolManagement
         private static bool PrintUserMenu()
         {
             var quitApp = false;
-            Dictionary<string, Action> commands = new Dictionary<string, Action>();
-            commands.Add("1", new Action(LoadDataFromCsvFile));
-            commands.Add("2", new Action(LoadDataFromCsvFileAndSearch));
-            commands.Add("3", new Action(AddNewStudent));
-            commands.Add("4", new Action(SearchRecord));
-            commands.Add("5", new Action(ExitApplication));
+            var commands = new Dictionary<string, Action>();
+            commands.Add("1", LoadDataFromCsvFile);
+            commands.Add("2", LoadDataFromCsvFileAndSearch);
+            commands.Add("3", AddNewStudent);
+            commands.Add("4", SearchRecord);
+            commands.Add("5", ExitApplication);
 
             while (true)
             {
@@ -101,6 +100,25 @@ namespace SchoolManagement
 
         private static void SearchRecord()
         {
+            Log.Info("Search records from loaded data");
+            if (SchoolData != null || SchoolData.Rows.Count > 0)
+            {
+                var queryValidator = new QueryValidator();
+                Console.WriteLine("The query must have the next format, ex: name=John type=high");
+                Console.Write("Enter the query: ");
+                var userInput = Console.ReadLine();
+                try
+                {
+                    queryValidator.Validate(userInput);
+
+                }
+                catch (QueryNotMatchException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.ReadKey();
+                }
+            }
+
             Console.WriteLine("Feature not implemented yet");
             Console.ReadKey();
         }
@@ -109,6 +127,7 @@ namespace SchoolManagement
         {
             Console.WriteLine("Feature not implemented yet");
             Console.ReadKey();
+
         }
 
         private static void LoadDataFromCsvFileAndSearch()
@@ -149,12 +168,11 @@ namespace SchoolManagement
             Console.WriteLine("== Load data from csv file ==");
             Console.Write("Enter the full path of the csv file: ");
             var filePath = Console.ReadLine();
-            var validators = new List<IValidator>
-            {
-                new PathValidator(filePath),
-                new FileValidator(filePath)
-            };
-            var dataReaderFactory = new DataReaderFactory(filePath, new CompositeValidator(validators));
+            var dataReaderFactory = new DataReaderFactory(
+                filePath,
+                new CompositeValidator<string>(
+                    new PathValidator(),
+                    new FileValidator()));
             SchoolData = dataReaderFactory.Get().ReadData();
             FileName = Path.GetFileName(filePath);
             PrintDataLoaded();
@@ -176,19 +194,15 @@ namespace SchoolManagement
                     Console.Write("\t{0}", column.ColumnName);
                 }
 
-                Console.WriteLine("\tRowState");
-
                 foreach (var row in currentRows)
                 {
                     foreach (DataColumn column in SchoolData.Columns)
                     {
                         Console.Write("\t{0}", row[column]);
                     }
-
-                    Console.WriteLine("\t" + row.RowState);
                 }
             }
-            Console.WriteLine($"\nTotal rows loaded: {currentRows.Length}");
+            Console.WriteLine($"\nTotal rows: {currentRows.Length}");
             Console.ReadKey();
         }
     }

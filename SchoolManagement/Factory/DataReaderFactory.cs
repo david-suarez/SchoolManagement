@@ -12,9 +12,9 @@ namespace SchoolManagement.Factory
     {
         private readonly string FilePath;
 
-        private readonly IValidator compositeValidator;
+        private readonly IValidator<string> compositeValidator;
 
-        public DataReaderFactory(string filePath, IValidator compositeValidator)
+        public DataReaderFactory(string filePath, IValidator<string> compositeValidator)
         {
             Guard.ArgumentIsNotNull(compositeValidator, nameof(compositeValidator));
 
@@ -39,7 +39,7 @@ namespace SchoolManagement.Factory
 
         private FileExtensions GetFileExtension()
         {
-            this.compositeValidator.Validate();
+            this.compositeValidator.Validate(this.FilePath);
             var extension = Path.GetExtension(this.FilePath);
             if (extension.Equals(".csv"))
             {

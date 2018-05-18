@@ -15,7 +15,7 @@ namespace SchoolManagementTests.Factory
         public void Get_SendCsvFilePath_ReturnCsvDataReaderInstance()
         {
             var filePath = "..\\..\\..\\Resources\\data.csv";
-            var factory = new DataReaderFactory(filePath, new FileValidator(filePath));
+            var factory = new DataReaderFactory(filePath, new FileValidator());
             var reader = factory.Get();
             Assert.AreEqual(typeof(CsvDataReader), reader.GetType());
         }
@@ -26,7 +26,7 @@ namespace SchoolManagementTests.Factory
         [DataTestMethod]
         public void Get_SendNonCsvFilePath_ThrowException(string filePath)
         {
-            var factory = new DataReaderFactory(filePath, new FileValidator(filePath));
+            var factory = new DataReaderFactory(filePath, new FileValidator());
 
             Assert.ThrowsException<NotSupportedException>(() => factory.Get());
         }
