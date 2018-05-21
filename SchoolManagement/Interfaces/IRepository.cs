@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace SchoolManagement.Interfaces
@@ -9,7 +8,7 @@ namespace SchoolManagement.Interfaces
     {
         IEnumerable<T> GetAll();
 
-        IEnumerable<T> Find(Func<T, bool> where);
+        IEnumerable<T> Find(Expression<Func<T, bool>> where);
 
         T Delete(T entity);
 

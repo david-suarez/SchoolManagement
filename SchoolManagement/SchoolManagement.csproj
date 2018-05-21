@@ -46,6 +46,10 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,14 +66,17 @@
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Interfaces\IFactory.cs" />
     <Compile Include="Interfaces\IMap.cs" />
+    <Compile Include="Interfaces\IQueryGenerator.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IValidator.cs" />
     <Compile Include="Mapping\MappingStudent.cs" />
+    <Compile Include="Mapping\StudentQueryGenerator.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\StudentRepository.cs" />
     <Compile Include="Resourses\Enums\FileExtensions.cs" />
+    <Compile Include="Utilities\ReflectionExtensionMethods.cs" />
     <Compile Include="Validators\CompositeValidator.cs" />
     <Compile Include="Validators\FileValidator.cs" />
     <Compile Include="Validators\Guard.cs" />

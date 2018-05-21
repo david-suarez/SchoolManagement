@@ -2,24 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 
 using SchoolManagement.Interfaces;
 using SchoolManagement.Validators;
 
 namespace SchoolManagement.Repository
 {
-    public class Repository<T> : IRepository<T> where T : class, IEntity, IComparable
+    public class Repository<T> : IRepository<T> where T : class, IEntity, IEquatable<T>
     {
-        private readonly DataTable data;
 
-        private readonly IEnumerable<T> objects;
+        private  IEnumerable<T> objects;
 
         public Repository(DataTable data, IMap<DataTable, IEnumerable<T>> mappingObject)
         {
             Guard.ArgumentIsNotNull(data, nameof(data));
             Guard.ArgumentIsNotNull(mappingObject, nameof(mappingObject));
-
-            this.data = data;
+            
             this.objects = mappingObject.Map(data);
         }
 
@@ -28,9 +27,9 @@ namespace SchoolManagement.Repository
             return this.objects;
         }
 
-        public IEnumerable<T> Find(Func<T, bool> where)
+        public IEnumerable<T> Find(Expression<Func<T, bool>> where)
         {
-            return this.objects.ToList().Where(where);
+            return this.objects.ToList().Where(where.Compile());
         }
 
         public T Delete(T entity)
@@ -46,7 +45,9 @@ namespace SchoolManagement.Repository
 
         public T Add(T entity)
         {
-            this.objects.ToList().Add(entity);
+            var newObjects = this.objects.ToList();
+            newObjects.Add(entity);
+            this.objects = newObjects;
             return entity;
         }
 

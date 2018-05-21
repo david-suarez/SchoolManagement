@@ -24,34 +24,35 @@ namespace SchoolManagement.Mapping
 
             foreach (var row in currentRows)
             {
+                var student = new Student();
                 foreach (DataColumn column in data.Columns)
                 {
-                    var student = new Student();
-                    if (column.ColumnName == "NAME")
+                    var columnName = column.ColumnName.Trim();
+                    if (columnName == "NAME")
                     {
                         student.Name = (string)row[column];
                     }
 
-                    if (column.ColumnName == "TYPE")
+                    if (columnName == "TYPE")
                     {
                         student.Type = (string)row[column];
                     }
 
-                    if (column.ColumnName == "GENDER")
+                    if (columnName == "GENDER")
                     {
                         student.Gender = (string)row[column];
                     }
 
-                    if (column.ColumnName == "LASTUPDATE")
+                    if (columnName == "LASTUPDATE" || columnName == "TIMESTAMP")
                     {
                         student.LastUpdate = DateTime.ParseExact(
-                            (string)row[column],
+                            ((string)row[column]).Trim(),
                             "yyyyMMddHHmmss",
                             System.Globalization.CultureInfo.InvariantCulture);
                     }
-
-                    listResult.Add(student);
                 }
+
+                listResult.Add(student);
             } 
 
             return listResult;
