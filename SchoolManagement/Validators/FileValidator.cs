@@ -1,26 +1,20 @@
-﻿using System.IO;
+using System.IO;
 
 using SchoolManagement.Interfaces;
 
 namespace SchoolManagement.Validators
 {
-    public class FileValidator : IValidator
+    public class FileValidator : IValidator<string>
     {
-        private readonly string filePath;
-
-        public FileValidator(string filePath)
+        public bool Validate(string filePath)
         {
-            this.filePath = filePath;
-        }
-
-        public bool Validate()
-        {
-            if(File.Exists(this.filePath))
+            if (File.Exists(filePath))
             {
                 return true;
             }
-            var fileName = Path.GetFileName(this.filePath);
-            var path = Path.GetDirectoryName(this.filePath);
+
+            var fileName = Path.GetFileName(filePath);
+            var path = Path.GetDirectoryName(filePath);
             throw new FileNotFoundException($"The {fileName} does not exist in the path {path}", fileName);
         }
     }

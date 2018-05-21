@@ -1,38 +1,25 @@
-﻿using System.Collections.Generic;
+using System.Linq;
 
 using SchoolManagement.Interfaces;
 
 namespace SchoolManagement.Validators
 {
-    public class CompositeValidator : IValidator
+    public class CompositeValidator<T> : IValidator<T>
     {
-        private readonly List<IValidator> validators;
+        private readonly IValidator<T>[] validators;
 
         public CompositeValidator() { }
 
-        public CompositeValidator(List<IValidator> validators)
+        public CompositeValidator(params IValidator<T>[] validators)
         { 
             Guard.ArgumentIsNotNull(validators, nameof(validators));
 
             this.validators = validators;
         }
 
-        public bool Validate()
+        public bool Validate(T target)
         {
-            foreach(var validator in this.validators)
-            {
-                if (!validator.Validate())
-                {
-                    return false;
-                };
-            }
-
-            return true;
-        }
-
-        public void AddValidator(IValidator validator)
-        {
-            this.validators.Add(validator);
+            return this.validators.All(validator => validator.Validate(target));
         }
     }
 }

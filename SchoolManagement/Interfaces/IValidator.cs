@@ -1,8 +1,8 @@
-﻿
+
 namespace SchoolManagement.Interfaces
 {
-    public interface IValidator
+    public interface IValidator<in T>
     {
-        bool Validate();
+        bool Validate(T target);
     }
 }

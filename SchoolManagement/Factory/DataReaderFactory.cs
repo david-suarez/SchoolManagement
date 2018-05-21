@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.IO;
 
 using SchoolManagement.DataReader;
@@ -11,25 +10,25 @@ namespace SchoolManagement.Factory
 {
     public class DataReaderFactory : IFactory<IDataReader>
     {
-        private readonly string filePath;
+        private readonly string FilePath;
 
-        private readonly IValidator compositeValidator;
+        private readonly IValidator<string> compositeValidator;
 
-        public DataReaderFactory(string filePath, IValidator compositeValidator)
+        public DataReaderFactory(string filePath, IValidator<string> compositeValidator)
         {
             Guard.ArgumentIsNotNull(compositeValidator, nameof(compositeValidator));
 
-            this.filePath = filePath;
+            this.FilePath = filePath;
             this.compositeValidator = compositeValidator;
         }
 
         public IDataReader Get()
         {
-            var fileExtension = this.GetFileExtension(filePath);
+            var fileExtension = this.GetFileExtension();
             switch(fileExtension)
             {
                 case FileExtensions.CSV:
-                    return new CsvDataReader(filePath);
+                    return new CsvDataReader(this.FilePath);
                 case FileExtensions.TXT:
                 case FileExtensions.XML:
                 case FileExtensions.XLSX:
@@ -38,27 +37,26 @@ namespace SchoolManagement.Factory
             throw new NotSupportedException();
         }
 
-        private FileExtensions GetFileExtension(string filePath)
+        private FileExtensions GetFileExtension()
         {
-            this.compositeValidator.Validate();
-            var extension = Path.GetExtension(filePath);
-            if(extension.Equals(".csv"))
+            this.compositeValidator.Validate(this.FilePath);
+            var extension = Path.GetExtension(this.FilePath);
+            if (extension.Equals(".csv"))
             {
                 return FileExtensions.CSV;
             }
+
             if (extension.Equals(".xml"))
             {
                 return FileExtensions.XML;
             }
+
             if (extension.Equals(".txt"))
             {
                 return FileExtensions.TXT;
             }
-            if (extension.Equals(".xlsx"))
-            {
-                return FileExtensions.XLSX;
-            }
-            return FileExtensions.NonSuported;
+
+            return extension.Equals(".xlsx") ? FileExtensions.XLSX : FileExtensions.NonSuported;
         } 
     }
 }

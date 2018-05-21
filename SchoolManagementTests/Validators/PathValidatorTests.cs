@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using SchoolManagement.Exceptions;
 using SchoolManagement.Validators;
 
@@ -17,9 +12,9 @@ namespace SchoolManagementTests.Validators
         public void Validate_CorrectFilePath_ValidateCorrectly()
         {
             var filePath = "c:\\SomeDirectory\\SomeFile.txt";
-            var pathValidator = new PathValidator(filePath);
+            var pathValidator = new PathValidator();
 
-            Assert.IsTrue(pathValidator.Validate());
+            Assert.IsTrue(pathValidator.Validate(filePath));
         }
 
         [DataRow("cda:\\")]
@@ -28,9 +23,9 @@ namespace SchoolManagementTests.Validators
         public void Validate_IncorrectFilePath_ThrowException(string filePath)
         {
             
-            var pathValidator = new PathValidator(filePath);
+            var pathValidator = new PathValidator();
 
-            Assert.ThrowsException<InvalidPathException>(() => pathValidator.Validate());
+            Assert.ThrowsException<InvalidPathException>(() => pathValidator.Validate(filePath));
         }
     }
 }

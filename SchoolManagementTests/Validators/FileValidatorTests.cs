@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,18 +13,18 @@ namespace SchoolManagementTests.Validators
         public void Validate_CorrectFilePath_ValidateCorrectly()
         {
             var filePath = "..\\..\\..\\Resources\\data.csv";
-            var fileValidator = new FileValidator(filePath);
+            var fileValidator = new FileValidator();
 
-            Assert.IsTrue(fileValidator.Validate());
+            Assert.IsTrue(fileValidator.Validate(filePath));
         }
 
         [DataRow("..\\..\\..\\Resources\\NoFile.csv")]
         [DataTestMethod]
         public void Validate_IncorrectFilePath_ThrowException(string filePath)
         {
-            var fileValidator = new FileValidator(filePath);
+            var fileValidator = new FileValidator();
 
-            Assert.ThrowsException<FileNotFoundException>(() => fileValidator.Validate());
+            Assert.ThrowsException<FileNotFoundException>(() => fileValidator.Validate(filePath));
         }
     }
 }
